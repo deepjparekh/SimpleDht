@@ -59,6 +59,7 @@ public class SimpleDhtActivity extends Activity {
         //Starting serverTaskJoinRequest only if it is AVD 5554
         if(myPort.equals(Constants.REMOTE_PORT0))
         {
+            Log.d(Constants.TAG,"Starting server for "+myPort);
             try {
                 ServerSocket serverSocket = new ServerSocket(10000);
                 new ServerTaskJoinRequest().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, serverSocket);
