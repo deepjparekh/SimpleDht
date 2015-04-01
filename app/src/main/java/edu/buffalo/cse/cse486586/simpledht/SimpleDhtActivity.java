@@ -65,7 +65,7 @@ public class SimpleDhtActivity extends Activity {
                 new ServerTaskJoinRequest().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, serverSocket);
 
             } catch (Exception e) {
-                Log.e("Yahape 1", e.toString());
+                Log.e(Constants.TAG, e.toString());
             }
         }
 
