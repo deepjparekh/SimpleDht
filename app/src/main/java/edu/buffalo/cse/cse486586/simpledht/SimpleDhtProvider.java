@@ -165,7 +165,7 @@ public class SimpleDhtProvider extends ContentProvider {
                 db.insert(TABLE_NAME,null,values);
             }
         }*/
-        Log.d(Constants.TAG,"Trying to insert in same node key : " +values.keySet().iterator().next() +" And value "+values.valueSet().iterator().next());
+        Log.d(Constants.TAG,"Trying to insert in same node key : " +values.keySet().iterator().next().toString() +" And value "+values.valueSet().iterator().next());
         db.insert(TABLE_NAME,null,values);
         return uri;
     }
