@@ -16,7 +16,6 @@ class ServerTaskJoinRequest extends AsyncTask<ServerSocket,String, Void> {
     String Message_Type;
     String splitArray[];
     String ReceiverportNumber;
-    String
 
 
     @Override

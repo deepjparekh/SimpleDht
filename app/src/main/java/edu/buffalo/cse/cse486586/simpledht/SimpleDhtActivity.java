@@ -68,6 +68,19 @@ public class SimpleDhtActivity extends Activity {
             } catch (Exception e) {
                 Log.e(Constants.TAG, e.toString());
             }
+
+            try {
+                t.wait(5000);
+
+                //sending out predecessors and successors after 5 seconds
+
+
+
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         //message.setFlagIsJoin(true);
@@ -80,7 +93,7 @@ public class SimpleDhtActivity extends Activity {
                     Constants.Delimiter +
                     myPort);
             try {
-                t.wait(10000);
+                t.wait(5000);
 
             } catch (Exception e) {
                 e.printStackTrace();
