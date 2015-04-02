@@ -15,22 +15,25 @@ import java.net.UnknownHostException;
  */
 class ClientTaskJoinRequest extends AsyncTask<String, Void, Void> {
 
+    public String portNumber;
     //Task which sends join request messages to 5554
     @Override
-    protected Void doInBackground(String... msgs) {
+    protected Void doInBackground(String... message) {
         Socket socket = null;
         OutputStream outStream = null;
         DataOutputStream out = null;
         String msgToSend =null;
+        String portNumber;
         try {
-            socket = new Socket(InetAddress.getByAddress(new byte[]{10, 0, 2, 2}), Integer.parseInt(Constants.REMOTE_PORT0));
-            msgToSend = msgs[0];
+            msgToSend = message[0];
+            portNumber=msgToSend.split(Constants.Delimiter)[1];
+            socket = new Socket(InetAddress.getByAddress(new byte[]{10, 0, 2, 2}), Integer.parseInt(portNumber));
             outStream = socket.getOutputStream();
             out = new DataOutputStream(outStream);
             out.writeUTF(msgToSend);
             out.flush();
             socket.close();
-            Log.d("ClientTaskJoinRequest", "Sending JoinRequest to AVD 5554 from " + Constants.REMOTE_PORT0);
+            Log.d("ClientTaskJoinRequest", "Sending from " + portNumber);
         } catch (UnknownHostException e) {
             //  Log.e(TAG, "ClientTask UnknownHostException "+remotePort);
         } catch (IOException e) {
@@ -39,4 +42,5 @@ class ClientTaskJoinRequest extends AsyncTask<String, Void, Void> {
 
         return null;
     }
+
 }

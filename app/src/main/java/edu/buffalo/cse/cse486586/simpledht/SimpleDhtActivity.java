@@ -23,15 +23,17 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Formatter;
+import java.util.HashMap;
 import java.util.TreeMap;
 
 public class SimpleDhtActivity extends Activity {
 
     //Devices Porth Number
     public static String myPort;
-
+    private HashMap<String, Boolean> mapOfNodes = new HashMap<String, Boolean>();
+    Thread t = new Thread();
+    private Message message;
     // Map to find which node to redirect the insert command to
-
 
 
     ClientTaskJoinRequest ctsk = new ClientTaskJoinRequest();
@@ -40,11 +42,11 @@ public class SimpleDhtActivity extends Activity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)  {
-        Log.d(Constants.TAG,"OnCreate Method Called for "+ myPort);
+    protected void onCreate(Bundle savedInstanceState) {
+        Log.d(Constants.TAG, "OnCreate Method Called for " + myPort);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple_dht_main);
-        
+
         TextView tv = (TextView) findViewById(R.id.textView1);
         tv.setMovementMethod(new ScrollingMovementMethod());
         findViewById(R.id.button3).setOnClickListener(
@@ -57,9 +59,8 @@ public class SimpleDhtActivity extends Activity {
         myPort = String.valueOf((Integer.parseInt(portStr) * 2));
 
         //Starting serverTaskJoinRequest only if it is AVD 5554
-        if(myPort.equals(Constants.REMOTE_PORT0))
-        {
-            Log.d(Constants.TAG,"Starting server for "+myPort);
+        if (myPort.equals(Constants.REMOTE_PORT0)) {
+            Log.d(Constants.TAG, "Starting server for " + myPort);
             try {
                 ServerSocket serverSocket = new ServerSocket(10000);
                 new ServerTaskJoinRequest().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, serverSocket);
@@ -69,18 +70,25 @@ public class SimpleDhtActivity extends Activity {
             }
         }
 
+        //message.setFlagIsJoin(true);
+        //message.setPortNumber(myPort);
 
-        ctsk.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, myPort, myPort);
+        while (!Constants.isJoined) {
+            ctsk.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, Constants.Join_Request +
+                    Constants.Delimiter +
+                    Constants.REMOTE_PORT0 +
+                    Constants.Delimiter +
+                    myPort);
+            try {
+                t.wait(10000);
 
-
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
 
     }
-
-
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

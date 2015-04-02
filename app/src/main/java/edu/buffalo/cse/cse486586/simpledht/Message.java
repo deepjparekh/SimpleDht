@@ -1,5 +1,7 @@
 package edu.buffalo.cse.cse486586.simpledht;
 
+import java.util.HashMap;
+
 /**
  * Created by deep on 4/1/15.
  */
@@ -10,7 +12,17 @@ public class Message {
     private boolean flagIsSuccessorPredecessor;
     private String[] SuccessorPredecessor;
     private Query query;
+    private String portNumber;
 
+    public boolean isJoined() {
+        return isJoined;
+    }
+
+    public void setJoined(boolean isJoined) {
+        this.isJoined = isJoined;
+    }
+
+    private boolean isJoined;
     public boolean isFlagIsSuccessorPredecessor() {
         return flagIsSuccessorPredecessor;
     }
@@ -19,7 +31,16 @@ public class Message {
         this.flagIsSuccessorPredecessor = flagIsSuccessorPredecessor;
     }
 
+    public String getPortNumber() {
+        return portNumber;
+    }
+
+    public void setPortNumber(String portNumber) {
+        this.portNumber = portNumber;
+    }
+
     public String[] getSuccessorPredecessor() {
+
         return SuccessorPredecessor;
     }
 
