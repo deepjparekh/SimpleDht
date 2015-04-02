@@ -30,11 +30,13 @@ public class SimpleDhtActivity extends Activity {
 
     //Devices Porth Number
     public static String myPort;
+
+    //Map for storing nodes
     private HashMap<String, Boolean> mapOfNodes = new HashMap<String, Boolean>();
     Thread t = new Thread();
     private Message message;
     // Map to find which node to redirect the insert command to
-
+    int i=5;
 
     ClientTaskJoinRequest ctsk = new ClientTaskJoinRequest();
 
@@ -43,7 +45,7 @@ public class SimpleDhtActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(Constants.TAG, "OnCreate Method Called for " + myPort);
+       // Log.d(Constants.TAG, "OnCreate Method Called for " + myPort);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple_dht_main);
 
@@ -57,47 +59,43 @@ public class SimpleDhtActivity extends Activity {
         TelephonyManager tel = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
         String portStr = tel.getLine1Number().substring(tel.getLine1Number().length() - 4);
         myPort = String.valueOf((Integer.parseInt(portStr) * 2));
+        Constants.myPort=myPort;
+        Log.d(Constants.TAG, "OnCreate Method Called for " + myPort);
 
         //Starting serverTaskJoinRequest only if it is AVD 5554
         if (myPort.equals(Constants.REMOTE_PORT0)) {
-            Log.d(Constants.TAG, "Starting server for " + myPort);
+            Log.d(Constants.TAG, "Starting server for Port " + myPort);
             try {
                 ServerSocket serverSocket = new ServerSocket(10000);
                 new ServerTaskJoinRequest().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, serverSocket);
 
+
+
             } catch (Exception e) {
                 Log.e(Constants.TAG, e.toString());
             }
-
-            try {
-                t.wait(5000);
-
-                //sending out predecessors and successors after 5 seconds
-
-
-
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
 
-        //message.setFlagIsJoin(true);
-        //message.setPortNumber(myPort);
-
-        while (!Constants.isJoined) {
-            ctsk.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, Constants.Join_Request +
+        while (!Constants.isJoined && i>0) {
+            Log.d(Constants.TAG,"Trying joining for "+myPort);
+            new ClientTaskJoinRequest().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, Constants.Join_Request +
                     Constants.Delimiter +
                     Constants.REMOTE_PORT0 +
                     Constants.Delimiter +
                     myPort);
+            i--;
             try {
-                t.wait(5000);
+               // t.wait(5000);
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+
+        }
+        if(i<=0 && !Constants.isJoined)
+        {
+            Log.d(Constants.TAG,"Aborting joining for "+myPort);
         }
 
 

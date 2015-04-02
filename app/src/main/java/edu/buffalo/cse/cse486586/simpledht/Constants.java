@@ -18,5 +18,16 @@ public class Constants {
     public static final String Delimiter="DeepDhtDelimiter";
     public static String successor=null;
     public static String predecessor=null;
+    public static String myPort=null;
+
+
+    public static  boolean got_Join_Request;
+    public static  boolean got_Join_Confirmation;
+    public static  boolean got_insert;
+    public  static  boolean got_Query;
+    public  static  boolean got_QueryStar;
+    public static  boolean got_Delete;
+    public static  boolean got_Predecessor_Successor;
+
 }
 
