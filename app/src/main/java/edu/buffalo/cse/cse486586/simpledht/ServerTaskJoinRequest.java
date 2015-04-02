@@ -47,7 +47,7 @@ class ServerTaskJoinRequest extends AsyncTask<ServerSocket,String, Void> {
                     {
                         return;
                     }
-                    nodesParticipating.put(x,String.valueOf(Integer.parseInt(SenderPortNumber)/2));
+                    nodesParticipating.put(x,String.valueOf(Integer.parseInt(SenderPortNumber)));
 
                     Log.d(Constants.TAG,"Sending Confirmation from server to "+ReceiverportNumber);
                     new ClientTaskJoinRequest().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR,Constants.Join_Confirmation+
@@ -79,8 +79,40 @@ class ServerTaskJoinRequest extends AsyncTask<ServerSocket,String, Void> {
                                }
                                 c.clear();
 
-                                for(String key:keys)
+                                for(int pos=0;pos<keys.size();pos++)
                                 {
+                                    if(pos==0)
+                                    {
+                                        new ClientTaskJoinRequest().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, Constants.Predecessor_Successor +
+                                                Constants.Delimiter +
+                                                nodesParticipating.get(keys.get(pos)) +
+                                                Constants.Delimiter +
+                                                nodesParticipating.get(keys.get(keys.size()-1)) +
+                                                Constants.Delimiter +
+                                                nodesParticipating.get(keys.get((pos + 1) % keys.size())) +
+                                                Constants.Delimiter +
+                                                Constants.myPort);
+                                        Log.d(Constants.TAG,"Predecessor : "+nodesParticipating.get(keys.get(keys.size()-1))+
+                                                "Successor : "+nodesParticipating.get(keys.get((pos + 1) % keys.size()))+
+                                        "for Node "+nodesParticipating.get(keys.get(pos)));
+                                    }
+                                    else {
+                                        new ClientTaskJoinRequest().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, Constants.Predecessor_Successor +
+                                                Constants.Delimiter +
+                                                nodesParticipating.get(keys.get(pos)) +
+                                                Constants.Delimiter +
+                                                nodesParticipating.get(keys.get((pos - 1) % keys.size())) +
+                                                Constants.Delimiter +
+                                                nodesParticipating.get(keys.get((pos + 1) % keys.size())) +
+                                                Constants.Delimiter +
+                                                Constants.myPort);
+
+                                        Log.d(Constants.TAG,"Predecessor : "+nodesParticipating.get(keys.get((pos - 1) % keys.size()))+
+                                                "Successor : "+nodesParticipating.get(keys.get((pos + 1) % keys.size()))+
+                                                "for Node "+nodesParticipating.get(keys.get(pos)));
+                                    }
+
+
 
                                 }
 
