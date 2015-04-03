@@ -33,7 +33,7 @@ class ClientTaskJoinRequest extends AsyncTask<String, Void, Void> {
             out.writeUTF(msgToSend);
             out.flush();
             socket.close();
-            Log.d("ClientTaskJoinRequest", "Sending from " + portNumber);
+            Log.d(Constants.TAG, "Sending "+msgToSend.split(Constants.Delimiter)[0]+" from " + portNumber);
         } catch (UnknownHostException e) {
             //  Log.e(TAG, "ClientTask UnknownHostException "+remotePort);
         } catch (IOException e) {

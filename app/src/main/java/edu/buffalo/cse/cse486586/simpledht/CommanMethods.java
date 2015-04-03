@@ -1,5 +1,7 @@
 package edu.buffalo.cse.cse486586.simpledht;
 
+import android.net.Uri;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Formatter;
@@ -16,5 +18,14 @@ public class CommanMethods {
             formatter.format("%02x", b);
         }
         return formatter.toString();
+    }
+
+
+
+    public static Uri buildUri(String scheme, String authority) {
+        Uri.Builder uriBuilder = new Uri.Builder();
+        uriBuilder.authority(authority);
+        uriBuilder.scheme(scheme);
+        return uriBuilder.build();
     }
 }
